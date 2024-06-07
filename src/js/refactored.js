@@ -10,6 +10,10 @@ function statement(invoice, plays) {
                         { style: "currency", currency: "USD",
                           minimumFractionDigits: 2 }).format;
 
+  function playFor(performance) {
+    return plays[performance.playID];
+  }
+
   function amountFor(performance, play) {
     let result = 0;
     switch (play.type) {
@@ -34,7 +38,7 @@ function statement(invoice, plays) {
   }
 
   for (let perf of invoice.performances) {
-    const play = plays[perf.playID];
+    const play = playFor(perf);
     const thisAmount = amountFor(perf, play);
 
     // ボリューム特典のポイントを加算
