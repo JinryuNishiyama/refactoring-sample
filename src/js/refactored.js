@@ -14,7 +14,7 @@ function statement(invoice, plays) {
     return plays[performance.playID];
   }
 
-  function amountFor(performance, play) {
+  function amountFor(performance) {
     let result = 0;
     switch (playFor(performance).type) {
       case "tragedy":
@@ -38,7 +38,7 @@ function statement(invoice, plays) {
   }
 
   for (let perf of invoice.performances) {
-    const thisAmount = amountFor(perf, playFor(perf));
+    const thisAmount = amountFor(perf);
 
     // ボリューム特典のポイントを加算
     volumeCredits += Math.max(perf.audience - 30, 0) ;
