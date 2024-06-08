@@ -70,6 +70,13 @@ function statement(invoice, plays) {
 
     return result;
   }
+  function volumeCreditsFor(performance) {
+    let result = 0;
+    result += Math.max(performance.audience - 30, 0) ;
+    if ("comedy" === performance.play.type) result += Math.floor(performance.audience / 5);
+
+    return result;
+  }
 
   const statementData = {
     customer: invoice.customer,
@@ -77,6 +84,7 @@ function statement(invoice, plays) {
       const result = {...perf};
       result.play = playFor(result);
       result.amount = amountFor(result);
+      result.volumeCredits = volumeCreditsFor(result);
       return result;
     }),
   };
