@@ -2,15 +2,6 @@ const invoice = require("../data/invoices.json");
 const plays = require("../data/plays.json");
 
 function renderPlainText(data) {
-  function totalAmount() {
-    let result = 0;
-    for (let perf of data.performances) {
-      result += perf.amount;
-    }
-
-    return result;
-  }
-
   function totalVolumeCredits() {
     let result = 0;
     for (let perf of data.performances) {
@@ -31,7 +22,7 @@ function renderPlainText(data) {
     // 注文の内訳を出力
     result += ` ${perf.play.name}: ${usd(perf.amount)} (${perf.audience} seats)\n`;
   }
-  result += `Amount owed is ${usd(totalAmount())}\n`;
+  result += `Amount owed is ${usd(data.totalAmount)}\n`;
   result += `You earned ${totalVolumeCredits()} credits\n`;
   return result;
 }
