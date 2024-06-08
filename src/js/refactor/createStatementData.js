@@ -26,7 +26,14 @@ module.exports = function createStatementData(invoice, plays) {
 }
 
 function createPerformanceCalculator(performance, play) {
-  return new PerformanceCalculator(performance, play);
+  switch(play.type) {
+    case "tragedy":
+      return new TragedyCalculator(performance, play);
+    case "comedy":
+      return new ComedyCalculator(performance, play);
+    default:
+      throw new Error(`未知の演劇の種類: ${play.type}`);
+  }
 }
 
 class PerformanceCalculator {
@@ -65,4 +72,10 @@ class PerformanceCalculator {
 
     return result;
   }
+}
+
+class TragedyCalculator extends PerformanceCalculator {
+}
+
+class ComedyCalculator extends PerformanceCalculator {
 }
