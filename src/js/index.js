@@ -12,6 +12,20 @@ function statement(invoice, plays) {
 
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
+    const thisAmount = amountFor(perf, play);
+    // ボリューム特典のポイントを加算
+    volumeCredits += Math.max(perf.audience - 30, 0) ;
+    // 喜劇のときは10人につき、さらにポイントを加算
+    if ("comedy" === play.type) volumeCredits += Math.floor(perf.audience / 5);
+    // 注文の内訳を出力
+    result += ` ${play.name}: ${format(thisAmount/100)} (${perf.audience} seats)\n`;
+    totalAmount += thisAmount;
+  }
+  result += `Amount owed is ${format(totalAmount/100)}\n`;
+  result += `You earned ${volumeCredits} credits\n`;
+  return result;
+  
+  function amountFor(perf, play) {
     let thisAmount = 0;
     switch (play.type) {
       case "tragedy":
@@ -30,17 +44,8 @@ function statement(invoice, plays) {
       default:
         throw new Error (`unknown type: ${play.type}`);
     }
-    // ボリューム特典のポイントを加算
-    volumeCredits += Math.max(perf.audience - 30, 0) ;
-    // 喜劇のときは10人につき、さらにポイントを加算
-    if ("comedy" === play.type) volumeCredits += Math.floor(perf.audience / 5);
-    // 注文の内訳を出力
-    result += ` ${play.name}: ${format(thisAmount/100)} (${perf.audience} seats)\n`;
-    totalAmount += thisAmount;
+    return thisAmount;
   }
-  result += `Amount owed is ${format(totalAmount/100)}\n`;
-  result += `You earned ${volumeCredits} credits\n`;
-  return result;
 }
 
 const result = statement(invoice, plays);
