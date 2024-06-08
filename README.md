@@ -20,4 +20,5 @@ docker-compose exec js /bin/sh
 
 ```sh
 node index.js
+node refactored.js
 ```
