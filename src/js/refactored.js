@@ -2,13 +2,9 @@ const invoice = require("../data/invoices.json");
 const plays = require("../data/plays.json");
 
 function renderPlainText(data, plays) {
-  function playFor(performance) {
-    return plays[performance.playID];
-  }
-
   function amountFor(performance) {
     let result = 0;
-    switch (playFor(performance).type) {
+    switch (performance.play.type) {
       case "tragedy":
         result = 40000;
         if (performance.audience > 30) {
@@ -23,7 +19,7 @@ function renderPlainText(data, plays) {
         result += 300 * performance.audience;
         break;
       default:
-        throw new Error (`unknown type: ${playFor(performance).type}`);
+        throw new Error (`unknown type: ${performance.play.type}`);
     }
 
     return result;
@@ -41,7 +37,7 @@ function renderPlainText(data, plays) {
   function volumeCreditsFor(performance) {
     let result = 0;
     result += Math.max(performance.audience - 30, 0) ;
-    if ("comedy" === playFor(performance).type) result += Math.floor(performance.audience / 5);
+    if ("comedy" === performance.play.type) result += Math.floor(performance.audience / 5);
 
     return result;
   }
@@ -64,7 +60,7 @@ function renderPlainText(data, plays) {
   let result = `Statement for ${data.customer}\n`;
   for (let perf of data.performances) {
     // 注文の内訳を出力
-    result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
+    result += ` ${perf.play.name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
   }
   result += `Amount owed is ${usd(totalAmount())}\n`;
   result += `You earned ${totalVolumeCredits()} credits\n`;
@@ -80,7 +76,7 @@ function statement(invoice, plays) {
     customer: invoice.customer,
     performances: invoice.performances.map(perf => ({
       ...perf,
-      play: playFor(perf),
+      play: playFor({...perf}),
     })),
   };
   return renderPlainText(statementData, plays);
