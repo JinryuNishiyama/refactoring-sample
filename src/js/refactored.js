@@ -74,10 +74,11 @@ function statement(invoice, plays) {
 
   const statementData = {
     customer: invoice.customer,
-    performances: invoice.performances.map(perf => ({
-      ...perf,
-      play: playFor({...perf}),
-    })),
+    performances: invoice.performances.map(perf => {
+      const result = {...perf};
+      result.play = playFor(result);
+      return result;
+    }),
   };
   return renderPlainText(statementData);
 }
