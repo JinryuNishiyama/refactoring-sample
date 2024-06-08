@@ -41,6 +41,7 @@ module.exports = function createStatementData(invoice, plays) {
   const statementData = {
     customer: invoice.customer,
     performances: invoice.performances.map(perf => {
+      const calculator = new PerformanceCalculator(perf);
       const result = {...perf};
       result.play = playFor(result);
       result.amount = amountFor(result);
@@ -51,4 +52,10 @@ module.exports = function createStatementData(invoice, plays) {
   statementData.totalAmount = totalAmount(statementData);
   statementData.totalVolumeCredits = totalVolumeCredits(statementData);
   return statementData;
+}
+
+class PerformanceCalculator {
+  constructor(performance) {
+    this.performance = performance;
+  }
 }
