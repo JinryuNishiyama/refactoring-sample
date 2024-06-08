@@ -16,10 +16,10 @@ function renderHtml(data) {
   for (let perf of data.performances) {
     result += `<tr><td>${perf.play.name}</td><td>${perf.audience}</td>`;
     result += `<td>${usd(perf.amount)}</td></tr>\n`;
-    result += "</table>\n";
-    result += `<p>Amount owed is <em>${usd(data.totalAmount)}</em></p>\n`;
-    result += `<p>You earned <em>${data.totalVolumeCredits}</em> credits</p>\n`;
   }
+  result += "</table>\n";
+  result += `<p>Amount owed is <em>${usd(data.totalAmount)}</em></p>\n`;
+  result += `<p>You earned <em>${data.totalVolumeCredits}</em> credits</p>\n`;
   return result;
 }
 function htmlStatement(invoice, plays) {
