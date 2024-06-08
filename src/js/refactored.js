@@ -74,7 +74,7 @@ function renderPlainText(data, plays) {
 function statement(invoice, plays) {
   const statementData = {
     customer: invoice.customer,
-    performances: invoice.performances,
+    performances: invoice.performances.map(perf => ({...perf})),
   };
   return renderPlainText(statementData, plays);
 }
