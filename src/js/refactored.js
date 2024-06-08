@@ -58,19 +58,23 @@ function statement(invoice, plays) {
     return data.performances.reduce((total, p) => total + p.volumeCredits, 0);
   }
 
-  const statementData = {
-    customer: invoice.customer,
-    performances: invoice.performances.map(perf => {
-      const result = {...perf};
-      result.play = playFor(result);
-      result.amount = amountFor(result);
-      result.volumeCredits = volumeCreditsFor(result);
-      return result;
-    }),
-  };
-  statementData.totalAmount = totalAmount(statementData);
-  statementData.totalVolumeCredits = totalVolumeCredits(statementData);
-  return renderPlainText(statementData);
+  function createStatementData(invoice) {
+    const statementData = {
+      customer: invoice.customer,
+      performances: invoice.performances.map(perf => {
+        const result = {...perf};
+        result.play = playFor(result);
+        result.amount = amountFor(result);
+        result.volumeCredits = volumeCreditsFor(result);
+        return result;
+      }),
+    };
+    statementData.totalAmount = totalAmount(statementData);
+    statementData.totalVolumeCredits = totalVolumeCredits(statementData);
+    return statementData;
+  }
+
+  return renderPlainText(createStatementData(invoice));
 }
 
 const result = statement(invoice, plays);
