@@ -3,20 +3,17 @@ const plays = require("../data/plays.json");
 
 function statement(invoice, plays) {
   let totalAmount = 0;
-  let volumeCredits = 0;
   let result = `Statement for ${invoice.customer}\n`;
 
   const format = new Intl.NumberFormat("en-US",
                         { style: "currency", currency: "USD",
                           minimumFractionDigits: 2 }).format;
 
+  let volumeCredits = 0;
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
     const thisAmount = amountFor(perf, play);
-    // ボリューム特典のポイントを加算
-    volumeCredits += Math.max(perf.audience - 30, 0) ;
-    // 喜劇のときは10人につき、さらにポイントを加算
-    if ("comedy" === play.type) volumeCredits += Math.floor(perf.audience / 5);
+    volumeCredits += volumeCreditsFor(perf, play);
     // 注文の内訳を出力
     result += ` ${play.name}: ${format(thisAmount/100)} (${perf.audience} seats)\n`;
     totalAmount += thisAmount;
@@ -45,6 +42,14 @@ function statement(invoice, plays) {
         throw new Error (`unknown type: ${play.type}`);
     }
     return result;
+  }
+  
+  function volumeCreditsFor(perf, play) {
+    let volumeCredits = 0;
+    volumeCredits += Math.max(perf.audience - 30, 0) ;
+    if ("comedy" === play.type) volumeCredits += Math.floor(perf.audience / 5);
+    
+    return volumeCredits;
   }
 }
 
