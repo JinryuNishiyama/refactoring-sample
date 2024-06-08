@@ -6,11 +6,7 @@ module.exports = function createStatementData(invoice, plays) {
     return data.performances.reduce((total, p) => total + p.amount, 0);
   }
   function volumeCreditsFor(performance) {
-    let result = 0;
-    result += Math.max(performance.audience - 30, 0) ;
-    if ("comedy" === performance.play.type) result += Math.floor(performance.audience / 5);
-
-    return result;
+    new PerformanceCalculator(performance, playFor(performance)).volumeCredits;
   }
   function totalVolumeCredits(data) {
     return data.performances.reduce((total, p) => total + p.volumeCredits, 0);
