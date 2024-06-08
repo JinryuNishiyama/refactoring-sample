@@ -72,9 +72,16 @@ function renderPlainText(data, plays) {
 }
 
 function statement(invoice, plays) {
+  function playFor(performance) {
+    return plays[performance.playID];
+  }
+
   const statementData = {
     customer: invoice.customer,
-    performances: invoice.performances.map(perf => ({...perf})),
+    performances: invoice.performances.map(perf => ({
+      ...perf,
+      play: playFor(perf),
+    })),
   };
   return renderPlainText(statementData, plays);
 }
