@@ -67,6 +67,13 @@ function statement(invoice, plays) {
 
     return result;
   }
+  function totalVolumeCredits(data) {
+    let result = 0;
+    for (let perf of data.performances) {
+      result += perf.volumeCredits;
+    }
+    return result;
+  }
 
   const statementData = {
     customer: invoice.customer,
@@ -79,6 +86,7 @@ function statement(invoice, plays) {
     }),
   };
   statementData.totalAmount = totalAmount(statementData);
+  statementData.totalVolumeCredits = totalVolumeCredits(statementData);
   return renderPlainText(statementData);
 }
 
