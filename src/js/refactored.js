@@ -2,7 +2,6 @@ const invoice = require("../data/invoices.json");
 const plays = require("../data/plays.json");
 
 function statement(invoice, plays) {
-  let totalAmount = 0;
   let result = `Statement for ${invoice.customer}\n`;
 
   function playFor(performance) {
@@ -32,6 +31,15 @@ function statement(invoice, plays) {
     return result;
   }
 
+  function calcTotalAmount() {
+    let totalAmount = 0;
+    for (let perf of invoice.performances) {
+      totalAmount += amountFor(perf);
+    }
+
+    return totalAmount;
+  }
+
   function volumeCreditsFor(performance) {
     let result = 0;
     result += Math.max(performance.audience - 30, 0) ;
@@ -58,8 +66,8 @@ function statement(invoice, plays) {
   for (let perf of invoice.performances) {
     // 注文の内訳を出力
     result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
-    totalAmount += amountFor(perf);
   }
+  let totalAmount = calcTotalAmount();
   result += `Amount owed is ${usd(totalAmount)}\n`;
   result += `You earned ${totalVolumeCredits()} credits\n`;
   return result;
