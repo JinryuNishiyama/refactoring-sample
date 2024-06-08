@@ -41,9 +41,9 @@ module.exports = function createStatementData(invoice, plays) {
   const statementData = {
     customer: invoice.customer,
     performances: invoice.performances.map(perf => {
-      const calculator = new PerformanceCalculator(perf);
+      const calculator = new PerformanceCalculator(perf, playFor(perf));
       const result = {...perf};
-      result.play = playFor(result);
+      result.play = calculator.play;
       result.amount = amountFor(result);
       result.volumeCredits = volumeCreditsFor(result);
       return result;
@@ -55,7 +55,8 @@ module.exports = function createStatementData(invoice, plays) {
 }
 
 class PerformanceCalculator {
-  constructor(performance) {
+  constructor(performance, play) {
     this.performance = performance;
+    this.play = play;
   }
 }
