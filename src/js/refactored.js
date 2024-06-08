@@ -1,7 +1,7 @@
 const invoice = require("../data/invoices.json");
 const plays = require("../data/plays.json");
 
-function renderPlainText(data, plays) {
+function renderPlainText(data) {
   function amountFor(performance) {
     let result = 0;
     switch (performance.play.type) {
@@ -79,7 +79,7 @@ function statement(invoice, plays) {
       play: playFor({...perf}),
     })),
   };
-  return renderPlainText(statementData, plays);
+  return renderPlainText(statementData);
 }
 
 const result = statement(invoice, plays);
