@@ -2,9 +2,6 @@ module.exports = function createStatementData(invoice, plays) {
   function playFor(performance) {
     return plays[performance.playID];
   }
-  function amountFor(performance) {
-    return new PerformanceCalculator(performance, playFor(performance)).amount;
-  }
   function totalAmount(data) {
     return data.performances.reduce((total, p) => total + p.amount, 0);
   }
@@ -25,7 +22,7 @@ module.exports = function createStatementData(invoice, plays) {
       const calculator = new PerformanceCalculator(perf, playFor(perf));
       const result = {...perf};
       result.play = calculator.play;
-      result.amount = amountFor(result);
+      result.amount = calculator.amount;
       result.volumeCredits = volumeCreditsFor(result);
       return result;
     }),
