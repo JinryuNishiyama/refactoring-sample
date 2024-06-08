@@ -71,12 +71,35 @@ function statement(invoice, plays) {
   function playFor(performance) {
     return plays[performance.playID];
   }
+  function amountFor(performance) {
+    let result = 0;
+    switch (performance.play.type) {
+      case "tragedy":
+        result = 40000;
+        if (performance.audience > 30) {
+          result += 1000 * (performance.audience - 30);
+        }
+        break;
+      case "comedy":
+        result = 30000;
+        if (performance.audience > 20) {
+          result += 10000 + 500 * (performance.audience - 20);
+        }
+        result += 300 * performance.audience;
+        break;
+      default:
+        throw new Error (`unknown type: ${performance.play.type}`);
+    }
+
+    return result;
+  }
 
   const statementData = {
     customer: invoice.customer,
     performances: invoice.performances.map(perf => {
       const result = {...perf};
       result.play = playFor(result);
+      result.amount = amountFor(result);
       return result;
     }),
   };
