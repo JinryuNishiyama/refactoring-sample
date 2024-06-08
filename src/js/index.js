@@ -44,12 +44,12 @@ function statement(invoice, plays) {
     return result;
   }
   
-  function volumeCreditsFor(perf, play) {
-    let volumeCredits = 0;
-    volumeCredits += Math.max(perf.audience - 30, 0) ;
-    if ("comedy" === play.type) volumeCredits += Math.floor(perf.audience / 5);
+  function volumeCreditsFor(performance, play) {
+    let results = 0;
+    results += Math.max(performance.audience - 30, 0) ;
+    if ("comedy" === play.type) results += Math.floor(performance.audience / 5);
     
-    return volumeCredits;
+    return results;
   }
 }
 
